@@ -1,8 +1,17 @@
+<?php 
+	if(isset($_COOKIE["username"])){
+		header("Location: home.php");
+	}
+ ?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Tugas PHP</title>
+	<link rel="icon" href="images/resources/logo.png">
+	<title>Welcome to Goblogger</title>
 	<style type="text/css">
+		input:-webkit-autofill {
+			-webkit-box-shadow: 0 0 0px 1000px white inset;
+		}
 		body{
 			font-family: arial;
 			background-image: url('images/resources/bg.png');
@@ -28,6 +37,7 @@
 		td input{
 			height:30px;
 			width:250px;
+			outline:none;
 		}
 		#button_register, #button_login{
 			width:255px;
@@ -38,6 +48,7 @@
 		td select{
 			height:30px;
 			width:254px;
+			outline:none;
 		}
 		.bday{
 			width:61px;
@@ -96,7 +107,7 @@
 <body>
 	<div id="wrapper">
 		<div id="header">
-			<a href="home_button.php" style="text-decoration:none; margin-left:200px; margin-top:-100px">
+			<a href="main.php" style="text-decoration:none; margin-left:200px; margin-top:-100px">
 				<img src="images/resources/logo_no_background.png" style="width:50px; height:50px;">
 				<span style="color:white; font-size:30px; margin-top: 10px; position:absolute; width:100px; height:100px;">Goblogger</span>
 			</a>
@@ -130,8 +141,8 @@
 		           				<td><label>Gender</label></td>
 		           				<td>
 		           					<select name="gender">
-		           						<option value="male">Male</option>
-		           						<option value="female">Female</option>
+		           						<option value="m">Male</option>
+		           						<option value="f">Female</option>
 		           					</select>
 		           				</td>
 		           			</tr>
@@ -142,7 +153,10 @@
 		           					<select name="date" class="bday">
 		           						<?php 
 		           							for($i = 1; $i<=31;$i++){
-		           								echo "<option value=\"$i\">$i</option>";
+		           								if($i < 10)
+		           									echo "<option value=\"0$i\">0$i</option>";
+		           								else
+			           								echo "<option value=\"$i\">$i</option>";
 		           							}
 		           						 ?>
 		           					</select>
@@ -150,7 +164,10 @@
 		           					<select name="month" class="bday">
 		           						<?php 
 		           							for($i=1;$i<=12;$i++){
-		           								echo "<option value=\"$i\">$i</option>";
+		           								if($i < 10)
+		           									echo "<option value=\"0$i\">0$i</option>";
+		           								else
+			           								echo "<option value=\"$i\">$i</option>";
 		           							}
 		           						 ?>
 		           					</select>
@@ -169,7 +186,7 @@
 		           				<td><input type="text" name="email"></td>
 		           			</tr>
 		           			<tr>
-		           				<td colspan="2"><div style="text-align:right;"><input type="submit" value="Register" id="button_register" class="button"></div></td>
+		           				<td colspan="2"><div style="text-align:right;"><input type="submit" value="register" id="button_register" class="button"></div></td>
 		           			</tr>
 		           		</table>
 		           	</form>
