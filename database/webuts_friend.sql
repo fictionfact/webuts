@@ -24,7 +24,11 @@ DROP TABLE IF EXISTS `friend`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `friend` (
   `username` varchar(45) NOT NULL,
-  `username_friend` varchar(45) NOT NULL
+  `username_friend` varchar(45) NOT NULL,
+  KEY `FK_friend_1` (`username`),
+  KEY `FK_friend_2` (`username_friend`),
+  CONSTRAINT `FK_friend_1` FOREIGN KEY (`username`) REFERENCES `member` (`username`),
+  CONSTRAINT `FK_friend_2` FOREIGN KEY (`username_friend`) REFERENCES `member` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -46,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-03  5:42:16
+-- Dump completed on 2016-11-04  5:04:26

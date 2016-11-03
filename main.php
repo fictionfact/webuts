@@ -1,5 +1,6 @@
 <?php 
-	if(isset($_COOKIE["username"])){
+	session_start();
+	if(isset($_COOKIE["logged_in"])){
 		header("Location: home.php");
 	}
  ?>
@@ -23,7 +24,7 @@
 		#register{
 			width: 450px;
 			float:left;
-			margin-left: 50px;
+			margin-left: 80px;
 		}
 		#login{
 			width:450px;
@@ -69,7 +70,7 @@
 		#content{
 			margin: auto;
 			width:1150px;
-			height:600px;
+			height:700px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 			background-color: white;
 		}
@@ -119,12 +120,26 @@
 			<div id="main">
 				<div id="register">
 					<p style="text-align:center;">Create new account now!</p>
+					<?php 
+						if(isset($_SESSION['not_filled'])){
+							echo "<label style=\"color:red; margin-left:155px;\">Please fill all the data</label>";
+							unset($_SESSION['not_filled']);
+						}
+					 ?>
 					<form method="post" action="register.php">
 						<table>
 							<tr>
 								<td><label>Username</label></td>
 		           				<td><input type="text" name="username"></td>
-		           			</tr>	
+		           			</tr>
+		           			<?php 
+		           				if(isset($_SESSION['username'])){
+		           					echo "<tr>";
+		           					echo "<td colspan=2><label style=\"color:red; margin-left:155px;\">Username already exist</label></td>";
+		           					echo "</tr>";
+		           					unset($_SESSION['username']);
+		           				}
+		           			 ?>
 		           			<tr>
 		           				<td><label>Password</label></td>
 		           				<td><input type="password" name="password"></td>
@@ -133,6 +148,14 @@
 		           				<td><label>Confirm Password</label></td>
 		           				<td><input type="password" name="password-confirm"></td>
 		           			</tr>
+		           			<?php 
+		           				if(isset($_SESSION['password'])){
+		           					echo "<tr>";
+		           					echo "<td colspan=2><label style=\"color:red; margin-left:155px;\">Password does not match</label></td>";
+		           					echo "</tr>";
+		           					unset($_SESSION['password']);
+		           				}
+		           			 ?>
 		           			<tr>
 		           				<td><label>Name</label></td>
 		           				<td><input type="text" name="name"></td>
@@ -181,17 +204,33 @@
 		           					</select>
 		           				</td>
 		           			</tr>
+		           			<?php 
+		           				if(isset($_SESSION['date'])){
+		           					echo "<tr>";
+		           					echo "<td colspan=2><label style=\"color:red; margin-left:155px;\">Date is not valid</label></td>";
+		           					echo "</tr>";
+		           					unset($_SESSION['date']);
+		           				}
+		           			 ?>
 		           			<tr>
 		           				<td><label>Email</label></td>
 		           				<td><input type="text" name="email"></td>
 		           			</tr>
+		           			<?php 
+		           				if(isset($_SESSION['email'])){
+		           					echo "<tr>";
+		           					echo "<td colspan=2><label style=\"color:red; margin-left:155px;\">Email already exist</label></td>";
+		           					echo "</tr>";
+		           					unset($_SESSION['email']);
+		           				}
+		           			 ?>
 		           			<tr>
 		           				<td colspan="2"><div style="text-align:right;"><input type="submit" value="register" id="button_register" class="button"></div></td>
 		           			</tr>
 		           		</table>
 		           	</form>
 				</div>
-				<p style="float:left; margin-left:45px; margin-top:130px">Or,</p>
+				<p style="float:left; margin-left:25px;">Or,</p>
 				<div id="login">
 					<p style="text-align:center;">Login to an existing account!</p>
 					<form method="post" action="login.php">
@@ -199,11 +238,19 @@
 							<tr>
 								<td><label>Username</label></td>
 	           					<td><input type="text" name="username"></td>
-	           				</tr>	
+	           				</tr>
 	           				<tr>
 	           					<td><label>Password</label></td>
 	           					<td><input type="password" name="password"></td>
 	           				</tr>
+	           				<?php 
+		           				if(isset($_SESSION['login'])){
+		           					echo "<tr>";
+		           					echo "<td colspan=2><label style=\"color:red; margin-left:155px;\">Username/Password is wrong</label></td>";
+		           					echo "</tr>";
+		           					unset($_SESSION['login']);
+		           				}
+		           			 ?>
 	           				<tr>
 	           					<td colspan="2"><div style="text-align:right;"><input type="submit" value="Login" id="button_login" class="button"></div></td>
 	           				</tr>
@@ -213,7 +260,7 @@
 			</div>
 		</div>
 		<div id="footer">
-			<p>&copy;2016 <a href="home_button.php" style="text-decoration:none; color:white;">Goblogger.com</a></p>
+			<p>&copy;2016 <a href="main.php" style="text-decoration:none; color:white;">Goblogger.com</a></p>
 		</div>
 	</div>
 </body>

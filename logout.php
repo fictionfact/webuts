@@ -1,4 +1,4 @@
 <?php 
-	setcookie("username", null, time()-1);
+	setcookie("logged_in", null, time()-1);
 	header("Location: main.php")
  ?>
