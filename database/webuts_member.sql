@@ -43,7 +43,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES ('adsf;klj','40bd001563085fc35165329ea1ff5c5ecbdbbeef','l;aksjdf','2016-01-01','poui','m',NULL,NULL,NULL,NULL),('fictionfact','6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2','Harry','2016-01-01','error@gmail.com','m',NULL,NULL,NULL,NULL),('fictionfact13','f95fcf29c066c95ef7e46eff8b22ca0a763e3557','Yohanes','2016-01-01','asdfasdf@gmail.com','m',NULL,NULL,NULL,NULL),('fictionfact26','f95fcf29c066c95ef7e46eff8b22ca0a763e3557','yohanes','2016-01-01','hihi@gmail.com','m',NULL,NULL,NULL,NULL),('Yohanes','f95fcf29c066c95ef7e46eff8b22ca0a763e3557','Yohanes','1996-10-07','fictionfact26@gmail.com','m',NULL,NULL,NULL,'');
+INSERT INTO `member` VALUES ('adsf;klj','40bd001563085fc35165329ea1ff5c5ecbdbbeef','l;aksjdf','2016-01-01','poui','m',NULL,NULL,NULL,NULL),('fictionfact','6216f8a75fd5bb3d5f22b6f9958cdede3fc086c2','Harry','2016-01-01','error@gmail.com','m',NULL,NULL,NULL,NULL),('fictionfact13','f95fcf29c066c95ef7e46eff8b22ca0a763e3557','Yohanes','2016-01-01','asdfasdf@gmail.com','m',NULL,NULL,NULL,NULL),('fictionfact26','f95fcf29c066c95ef7e46eff8b22ca0a763e3557','yohanes','2016-01-01','hihi@gmail.com','m',NULL,NULL,NULL,NULL),('Yohanes','f95fcf29c066c95ef7e46eff8b22ca0a763e3557','Yohanes Han','1996-10-07','fictionfact26@gmail.com','m',NULL,NULL,NULL,'Yohanes.jpg');
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-04  5:04:24
+-- Dump completed on 2016-11-04 22:02:27

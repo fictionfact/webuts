@@ -109,7 +109,7 @@
 	<div id="wrapper">
 		<div id="header">
 			<a href="main.php" style="text-decoration:none; margin-left:200px; margin-top:-100px">
-				<img src="images/resources/logo_no_background.png" style="width:50px; height:50px;">
+				<img src="images/resources/logo_no_background.png" style="width:50px;">
 				<span style="color:white; font-size:30px; margin-top: 10px; position:absolute; width:100px; height:100px;">Goblogger</span>
 			</a>
 		</div>

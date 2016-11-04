@@ -26,12 +26,12 @@ CREATE TABLE `comment` (
   `id_comment` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `id_post` int(10) unsigned NOT NULL,
   `username` varchar(45) NOT NULL,
-  `content` text NOT NULL,
-  `date` date NOT NULL,
+  `comment` text NOT NULL,
+  `date` datetime NOT NULL,
   PRIMARY KEY (`id_comment`),
   KEY `FK_username` (`username`),
   CONSTRAINT `FK_username` FOREIGN KEY (`username`) REFERENCES `member` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,6 +40,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (6,8,'Yohanes','Wow!!','2016-11-04 08:51:01'),(7,8,'Yohanes','asdf;kljasdl;fjkal;sdfkjl;ajksdf;jaskdfj;lajksdfl;aksdjf;klasjdfl;kjasl;dfkjl;asdjkfl;asdjkfl;aksdfjl;asjkdfl;jasdl;fjkasl;dkfjl;asdfjkl;asdjfl;ajksdl;fjas;dfljkasl;dfkjl;asdfjl;','2016-11-04 15:10:00'),(8,7,'Yohanes','Nerd.','2016-11-04 11:36:07'),(9,9,'Yohanes','LOL','2016-11-04 11:46:43'),(10,9,'fictionfact26','wuttt','2016-11-04 12:53:51'),(11,11,'Yohanes','SHE\r\n\r\nIS\r\n\r\nSO\r\n\r\nPRETTY!','2016-11-04 13:21:14'),(12,13,'Yohanes','testas;aklsdjfl;aksdfjakl;jsdfl;ajksdf;klasjdfl;kajsdfkljaskl;dfj;alsjkdf;aklsjfl;ajksdfl;jkasl;dfkjal;skdfjl;asdfjl;akjdf;lajks;dfljkal;sjkdfl;aksdjfl;aksjdfl;ajks;dfljkal;sdkfj;alsjkdfl;aksjdf;lajksdl;fkjasl;dkfjal;sdkfjl;asdjkf;lajksdfasdf','2016-11-04 13:21:51'),(13,12,'fictionfact26','chill bro.\r\n\r\nchill.','2016-11-04 13:22:20');
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-04  5:04:23
+-- Dump completed on 2016-11-04 22:02:26
