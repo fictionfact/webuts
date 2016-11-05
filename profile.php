@@ -129,6 +129,119 @@
 		#edit_profile:hover{
 			text-decoration: underline;
 		}
+		.image_profile{
+			width:40px;
+			height:40px;
+			border: 2px solid white;
+			border-radius: 25px;
+			vertical-align: top;
+			background-color: #79D4F2;
+		}
+		.link_profile{
+			margin-left: 100px;
+		}
+		.image_profile_commenter{
+			width:30px;
+			height:30px;
+			border: 1.5px solid white;
+			border-radius: 18.75px;
+			vertical-align: top;
+			background-color: #79D4F2;
+		}
+		.link_commenter{
+			margin-left: 20px;
+		}
+		#username_name{
+			margin-left: 150px;
+			display: block;
+			margin-top:-30px;
+			text-decoration: none;
+			font-weight: bold;
+			color: #79D4F2;
+			width:300px;
+		}
+		#username_name:hover{
+			text-decoration: underline;
+		}
+		.commenter_name{
+			margin-top: -25px;
+			margin-left: 60px;
+			font-size: 14px;
+			display: block;
+			text-decoration: none;
+			font-weight: bold;
+			color: #79D4F2;
+			width:300px;
+		}
+		.commenter_name:hover{
+			text-decoration: underline;
+		}
+		.form_comment #text_comment{
+			resize: none;
+			width:600px;
+			height:80px;
+			margin-left: 100px;
+		}
+		#text_comment:focus{
+			outline: none;
+		}
+		#button_comment{
+			margin-left: 627px;
+			color:white;
+			padding:10px;
+			border: 2px solid white;
+			background-color: #79D4F2;
+			border-radius: 10px;
+			transition: background-color 300ms;
+		}
+		#button_comment:hover{
+			background-color: #59BDDE;
+		}
+		#button_comment:focus{
+			outline:none;
+		}
+		.comment_list{
+			margin-top: 10px;
+			border: 1px solid #79D4F2;
+			width:605px;
+			margin-left:100px;
+			border-radius: 10px;
+		}
+		hr{
+			margin-bottom: 30px;
+			height:0px;
+			border:0;
+			border-top: 1px solid #79D4F2;
+		}
+		.link_delete_post{
+			font-size: 12px;
+			display: block;
+			margin-left: 630px;
+			margin-top: -33px;
+			color: #59BDDE;
+			text-decoration: none;
+			width:62px;
+		}
+		.link_delete_post:hover{
+			text-decoration: underline;
+		}
+		.link_delete_comment{
+			font-size: 10px;
+			display: block;
+			margin-top: -10px;
+			margin-left: 481px;
+			color: #59BDDE;
+			text-decoration: none;
+			width:75px;
+		}
+		.link_delete_comment:hover{
+			text-decoration: underline;
+		}
+		#posts{
+			width:800px;
+			margin-left: auto;
+			margin-right: auto;
+		}
 	</style>
 </head>
 <body>
@@ -260,6 +373,90 @@
 						echo "<a href=\"add_friend.php?friend=$username_visited\" id=\"edit_profile\">Add friend</a>";
 				}
 			 ?>
+
+			<div id="posts">
+				<?php 
+					$conn = konek_db();
+					$visited = $_GET['username'];
+					$query = $conn->prepare("select * from post left join member ON post.username = member.username where post.username = ? order by date desc");
+					$query->bind_param("s", $visited);
+					$result = $query->execute();
+					if(! $result)
+						die("Gagal query");
+					$rows = $query->get_result();
+					if($rows->num_rows != 0){
+						echo "<br><br><p style=\"color:#59BDDE; font-size:22px; margin-left:370px;\">Posts</p>";
+					}
+					while($row = $rows->fetch_array()){
+						$id_post = $row['id_post'];
+						$username = $row['username'];
+						$name = $row['name'];
+						$content = $row['content'];
+						$image = $row['image'];
+						$date = $row['date'];
+						$profileimage = $row['profile_image'];
+						echo "<hr><div id=\"post\">";
+						if($profileimage != null && $profileimage != '')
+							echo "<a href=\"profile.php?username=$username\" class=\"link_profile\"><img src=\"images/thumbnail/$profileimage\" class=\"	image_profile\"></a>";
+						else
+							echo "<a href=\"profile.php?username=$username\" class=\"link_profile\"><img src=\"images/resources/default_profile.png\" class=\"image_profile\"></a>";
+						echo "<a href=\"profile.php?username=$username\" id=\"username_name\">$name</a><br>";
+						if ($username == $logged_username) {
+							echo "<a href=\"delete_post.php?id_post=$id_post\" class=\"link_delete_post\">Delete post</a>";
+						}
+						if($image != null && $image != ''){
+							echo "<img src=\"images/post/$image\" style=\"width:400px; margin-left:200px; margin-top:10px;\"><br><br>";
+						}
+						if ($username == $logged_username)
+							echo "<br>";
+						$content_new = nl2br($content);
+						echo "<p style=\"margin-left:150px; margin-top:-2px; width:500px; text-align:justify; word-wrap:break-word; line-height:20px;\">	$content_new</p>";
+						echo "<p style=\"margin-left:580px; font-size:12px; color:#D6D6D6;\">$date</p>";
+						echo "<form method=\"post\" action=\"comment.php?id_post=$id_post&logged_username=$logged_username\" class=\"form_comment\">";
+						echo "<textarea name=\"comment\" id=\"text_comment\" placeholder=\"Write comment here.\"></textarea><br>";
+						echo "<input type=\"submit\" name=\"post_comment\" value=\"Comment\" id=\"button_comment\">";
+						echo "</form>";
+
+						$querycheck = $conn->prepare("select * from comment where id_post = $id_post");
+						$resultcheck = $querycheck->execute();
+						if($result){
+							$resultcheck1 = $querycheck->get_result();
+							if($resultcheck1->num_rows > 0){
+								echo "<div class=\"comment_list\">";
+								echo "<p style=\"margin-left:20px;\">Comments</p>";
+								$query1 = $conn->prepare("select * from comment left join member ON comment.username = member.username where id_post = $id_post order by date asc");
+								$result1 = $query1->execute();
+								if(! $result1)
+									die("Gagal query");
+								$rows1 = $query1->get_result();
+								while($row1 = $rows1->fetch_array()){
+									$id_comment = $row1['id_comment'];
+									$commenter = $row1['username'];
+									$commenter_name = $row1['name'];
+									$comment = $row1['comment'];
+									$date_comment = $row1['date'];
+									$profileimagecommenter = $row1['profile_image'];
+									if($profileimagecommenter != null && $profileimagecommenter != '')
+										echo "<a href=\"profile.php?username=$commenter\" class=\"link_commenter\"><img src=\"images/thumbnail/$profileimagecommenter\" class=\"image_profile_commenter\"></a>";
+									else
+										echo "<a href=\"profile.php?username=$commenter\" class=\"link_commenter\"><img src=\"images/resources/default_profile.png\" class=\"image_profile_commenter\"></a>";
+									echo "<a href=\"profile.php?username=$commenter\" class=\"commenter_name\">$commenter_name</a><br>";
+									echo "<p style=\"color:#D6D6D6; font-size:10px; margin-left:460px; margin-top:-20px;\">$date_comment</p>";
+									$comment_new = nl2br($comment);
+									echo "<p style=\"margin-left:60px; margin-top: -5px; width:500px; text-align:justify; word-wrap:break-word; font-size:14px;\">$comment_new</p>";
+									if ($commenter == $logged_username) {
+										echo "<a href=\"delete_comment.php?id_comment=$id_comment\" class=\"link_delete_comment\">Delete comment</a>";
+									}
+									echo "<br>";
+								}
+								echo "</div>";
+							}
+						}
+						echo "</div>";
+						echo "<br><br>";
+					}
+				 ?>
+			</div>
 		</div>
 		<div id="footer">
 			<p>&copy;2016 <a href="main.php" style="text-decoration:none; color:white;">Goblogger.com</a></p>

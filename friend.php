@@ -5,11 +5,11 @@
 	}
 	setcookie("logged_in", $_COOKIE['logged_in'], time()+(86400*7));
  ?>
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
+	<title>Friend List - Goblogger</title>
 	<link rel="icon" href="images/resources/logo.png">
-	<title>Goblogger</title>
 	<style type="text/css">
 		body{
 			font-family: arial;
@@ -147,7 +147,7 @@
 	</style>
 </head>
 <body>
-	<div id='wrapper'>
+	<div id="wrapper">
 		<div id="header">
 			<a href="main.php" style="text-decoration:none; margin-left:200px; margin-top:-100px">
 				<img src="images/resources/logo_no_background.png" style="width:50px; height:50px;">
@@ -179,83 +179,41 @@
 				<a href="logout.php" class="side_text" id="sidetext">Logout</a>
 			</div>
 		</div>
-		<div id="content">
-			<?php 
+	</div>
+	<div id="content">
+		<?php 
 				$username_logged = $_COOKIE['logged_in'];
 				$conn = konek_db();
-				$username_search = "%".$_POST['name']."%";
-				$query = $conn->prepare("select * from member where name like ? or username like ?");
-				$query->bind_param("ss", $username_search, $username_search);
+				$query = $conn->prepare("select * from friend where username=?");
+				$query->bind_param("s", $username_logged);
 				$result = $query->execute();
 				$res = $query->get_result();
 				if($res->num_rows == 0){
-					echo "<p style=\"margin-left:100px;\">No result found.</p>";
-				}
-				else if(!empty($_POST['name'])){
-					while ($row = $res->fetch_array()) {
-						$profile_image = $row['profile_image'];
-						$username_found = $row['username'];
-						$name_of_username_found = $row['name'];
-						if ($_COOKIE['logged_in'] == $username_found) {
-							continue;
-						}
-						if($profile_image != null && $profile_image != '')
-							echo "<a href=\"profile.php?username=$username_found\" class=\"link_found\"><img src=\"images/thumbnail/$profile_image\" class=\"picture_found\"></a>";
-						else
-							echo "<a href=\"profile.php?username=$username_found\" class=\"link_found\"><img src=\"images/resources/default_profile.png\" class=\"picture_found\"></a>";
-						echo "<a href=\"profile.php?username=$username_found\" class=\"name_found\">$name_of_username_found</a><br><br><br>";
-						$query_check = $conn->prepare("select * from friend where username = ? and username_friend = ?");
-						$query_check->bind_param("ss", $username_logged, $username_found);
-						$result_check = $query_check->execute();
-						$res1 = $query_check->get_result();
-						if($res1->num_rows == 0){
-							echo "<a href=\"add_friend.php?friend=$username_found\" class=\"add_friend\">Add friend</a><br><br><br>";
-						}
-						else{
-							echo "<a href=\"remove_friend.php?friend=$username_found\" class=\"delete_friend\">Remove friend</a><br><br><br>";
-						}
-					}
+					echo "<p style=\"margin-left:100px;\">You have not added any friend yet.</p>";
 				}
 				else{
-					$username_logged = $_COOKIE['logged_in'];
-					$conn = konek_db();
-					$query = $conn->prepare("select * from member");
-					$result = $query->execute();
-					$res = $query->get_result();
-					if($res->num_rows == 0){
-						echo "<p style=\"margin-left:100px;\">No result found.</p>";
-					}
-					else{
-						while ($row = $res->fetch_array()) {
-							$profile_image = $row['profile_image'];
-							$username_found = $row['username'];
-							$name_of_username_found = $row['name'];
-							if ($_COOKIE['logged_in'] == $username_found) {
-								continue;
-							}
-							if($profile_image != null && $profile_image != '')
-								echo "<a href=\"profile.php?username=$username_found\" class=\"link_found\"><img src=\"images/thumbnail/$profile_image\" class=\"picture_found\"></a>";
-							else
-								echo "<a href=\"profile.php?username=$username_found\" class=\"link_found\"><img src=\"images/resources/default_profile.png\" class=\"picture_found\"></a>";
-							echo "<a href=\"profile.php?username=$username_found\" class=\"name_found\">$name_of_username_found</a><br><br><br>";
-							$query_check = $conn->prepare("select * from friend where username = ? and username_friend = ?");
-							$query_check->bind_param("ss", $username_logged, $username_found);
-							$result_check = $query_check->execute();
-							$res1 = $query_check->get_result();
-							if($res1->num_rows == 0){
-								echo "<a href=\"add_friend.php?friend=$username_found\" class=\"add_friend\">Add friend</a><br><br><br>";
-							}
-							else{
-								echo "<a href=\"remove_friend.php?friend=$username_found\" class=\"delete_friend\">Remove friend</a><br><br><br>";
-							}
+					while ($row = $res->fetch_array()) {
+						$friend = $row['username_friend'];
+						$query_friend = $conn->prepare("select * from member where username=?");
+						$query_friend->bind_param("s", $friend);
+						$result_friend = $query_friend->execute();
+						$res_friend = $query_friend->get_result();
+						while ($row_friend = $res_friend->fetch_array()) {
+							$name_friend = $row_friend['name'];
+							$profile_image = $row_friend['profile_image'];
 						}
+						if($profile_image != null && $profile_image != '')
+							echo "<a href=\"profile.php?username=$friend\" class=\"link_found\"><img src=\"images/thumbnail/$profile_image\" class=\"picture_found\"></a>";
+						else
+							echo "<a href=\"profile.php?username=$friend\" class=\"link_found\"><img src=\"images/resources/default_profile.png\" class=\"picture_found\"></a>";
+						echo "<a href=\"profile.php?username=$friend\" class=\"name_found\">$name_friend</a><br><br><br>";
+						echo "<a href=\"remove_friend.php?friend=$friend\" class=\"delete_friend\">Remove friend</a><br><br><br>";
 					}
 				}
 			 ?>
-		</div>
-		<div id="footer">
-			<p>&copy;2016 <a href="main.php" style="text-decoration:none; color:white;">Goblogger.com</a></p>
-		</div>
+	</div>
+	<div id="footer">
+		<p>&copy;2016 <a href="main.php" style="text-decoration:none; color:white;">Goblogger.com</a></p>
 	</div>
 </body>
 </html>

@@ -38,7 +38,7 @@ CREATE TABLE `friend` (
 
 LOCK TABLES `friend` WRITE;
 /*!40000 ALTER TABLE `friend` DISABLE KEYS */;
-INSERT INTO `friend` VALUES ('fictionfact26','fictionfact'),('fictionfact','fictionfact26'),('fictionfact26','Yohanes'),('Yohanes','fictionfact26'),('fictionfact26','fictionfact13'),('fictionfact13','fictionfact26'),('fictionfact26','adsf;klj'),('adsf;klj','fictionfact26');
+INSERT INTO `friend` VALUES ('fictionfact26','fictionfact'),('fictionfact','fictionfact26'),('fictionfact26','fictionfact13'),('fictionfact13','fictionfact26'),('Yohanes','fictionfact'),('fictionfact','Yohanes'),('123','fictionfact26'),('fictionfact26','123'),('123','Yohanes'),('Yohanes','123'),('fictionfact26','adsf;klj'),('adsf;klj','fictionfact26'),('fictionfact26','Yohanes'),('Yohanes','fictionfact26'),('haha','123'),('123','haha'),('haha','fictionfact'),('fictionfact','haha'),('haha','fictionfact26'),('fictionfact26','haha'),('haha','Yohanes'),('Yohanes','haha');
 /*!40000 ALTER TABLE `friend` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -51,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-05 19:33:44
+-- Dump completed on 2016-11-06  3:43:26

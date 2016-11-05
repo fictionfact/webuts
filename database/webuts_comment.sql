@@ -31,7 +31,7 @@ CREATE TABLE `comment` (
   PRIMARY KEY (`id_comment`),
   KEY `FK_username` (`username`),
   CONSTRAINT `FK_username` FOREIGN KEY (`username`) REFERENCES `member` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
-INSERT INTO `comment` VALUES (6,8,'Yohanes','Wow!!','2016-11-04 08:51:01'),(7,8,'Yohanes','asdf;kljasdl;fjkal;sdfkjl;ajksdf;jaskdfj;lajksdfl;aksdjf;klasjdfl;kjasl;dfkjl;asdjkfl;asdjkfl;aksdfjl;asjkdfl;jasdl;fjkasl;dkfjl;asdfjkl;asdjfl;ajksdl;fjas;dfljkasl;dfkjl;asdfjl;','2016-11-04 15:10:00'),(8,7,'Yohanes','Nerd.','2016-11-04 11:36:07'),(9,9,'Yohanes','LOL','2016-11-04 11:46:43'),(10,9,'fictionfact26','wuttt','2016-11-04 12:53:51'),(11,11,'Yohanes','SHE\r\n\r\nIS\r\n\r\nSO\r\n\r\nPRETTY!','2016-11-04 13:21:14'),(12,13,'Yohanes','testas;aklsdjfl;aksdfjakl;jsdfl;ajksdf;klasjdfl;kajsdfkljaskl;dfj;alsjkdf;aklsjfl;ajksdfl;jkasl;dfkjal;skdfjl;asdfjl;akjdf;lajks;dfljkal;sjkdfl;aksdjfl;aksjdfl;ajks;dfljkal;sdkfj;alsjkdfl;aksjdf;lajksdl;fkjasl;dkfjal;sdkfjl;asdjkf;lajksdfasdf','2016-11-04 13:21:51'),(13,12,'fictionfact26','chill bro.\r\n\r\nchill.','2016-11-04 13:22:20');
+INSERT INTO `comment` VALUES (9,9,'Yohanes','LOL','2016-11-04 11:46:43'),(10,9,'fictionfact26','wuttt','2016-11-04 12:53:51'),(11,11,'Yohanes','SHE\r\n\r\nIS\r\n\r\nSO\r\n\r\nPRETTY!','2016-11-04 13:21:14'),(15,14,'Yohanes','don\'t be so over dramatic','2016-11-05 18:54:11'),(19,10,'123','lol what?','2016-11-05 19:12:37'),(20,16,'Yohanes','Hello!!\r\nNice to meet you too!!','2016-11-05 19:39:18'),(21,18,'fictionfact','Congrats!!','2016-11-05 19:56:13'),(22,18,'123','good work!','2016-11-05 19:56:39'),(23,18,'fictionfact26','at last!\r\nyou\'ve been struggling so hard lately!\r\ncongrats!','2016-11-05 19:57:27'),(25,18,'haha','wow!!\r\nso much work put in this website!!\r\nthanks for your hard works!!','2016-11-06 02:32:34'),(26,17,'Yohanes','REOL!!!','2016-11-06 03:39:06');
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-05 19:33:41
+-- Dump completed on 2016-11-06  3:43:23

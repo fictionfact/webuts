@@ -1,6 +1,7 @@
 <?php 
+	date_default_timezone_set('Asia/Bangkok');
 	require_once 'db.php';
-	if(!empty($_POST['content'])) {
+	if(!empty($_POST['content']) || isset($_FILES['image'])) {
 		$content = $_POST['content'];
 		$conn = konek_db();
 		$query = $conn->prepare("SHOW TABLE STATUS WHERE `Name` = 'post'");
@@ -32,4 +33,6 @@
 			die("<p>Proses query gagal.</p>");
 		header("Location: home.php");
 	}
+	else
+		header("Location: main.php");
  ?>

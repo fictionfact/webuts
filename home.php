@@ -42,6 +42,7 @@
 			margin: auto;
 			padding-top: 80px;
 			width:950px;
+			min-height: 600px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 			background-color: white;
 		}
@@ -217,6 +218,30 @@
 			border:0;
 			border-top: 1px solid #79D4F2;
 		}
+		.link_delete_post{
+			font-size: 12px;
+			display: block;
+			margin-left: 630px;
+			margin-top: -33px;
+			color: #59BDDE;
+			text-decoration: none;
+			width:62px;
+		}
+		.link_delete_post:hover{
+			text-decoration: underline;
+		}
+		.link_delete_comment{
+			font-size: 10px;
+			display: block;
+			margin-top: -10px;
+			margin-left: 481px;
+			color: #59BDDE;
+			text-decoration: none;
+			width:75px;
+		}
+		.link_delete_comment:hover{
+			text-decoration: underline;
+		}
 	</style>
 </head>
 <body>
@@ -262,7 +287,8 @@
 				<div id="posts">
 					<?php 
 						$conn = konek_db();
-						$query = $conn->prepare("select * from post left join member ON post.username = member.username order by date desc");
+						$query = $conn->prepare("select post.*, member.name, member.profile_image FROM post left join member ON post.username = member.username where post.username in (select friend.username_friend from friend where friend.username = ?) or post.username = ? order by date desc");
+						$query->bind_param("ss", $logged_username, $logged_username);
 						$result = $query->execute();
 						if(! $result)
 							die("Gagal query");
@@ -281,16 +307,17 @@
 							else
 								echo "<a href=\"profile.php?username=$username\" class=\"link_profile\"><img src=\"images/resources/default_profile.png\" class=\"image_profile\"></a>";
 							echo "<a href=\"profile.php?username=$username\" id=\"username_name\">$name</a><br>";
+							if ($username == $logged_username) {
+								echo "<a href=\"delete_post.php?id_post=$id_post\" class=\"link_delete_post\">Delete post</a>";
+							}
 							if($image != null && $image != ''){
 								echo "<img src=\"images/post/$image\" style=\"width:400px; margin-left:200px; margin-top:10px;\"><br><br>";
 							}
+							if ($username == $logged_username)
+								echo "<br>";
 							$content_new = nl2br($content);
 							echo "<p style=\"margin-left:150px; margin-top:-2px; width:500px; text-align:justify; word-wrap:break-word; line-height:20px;\">$content_new</p>";
 							echo "<p style=\"margin-left:580px; font-size:12px; color:#D6D6D6;\">$date</p>";
-							echo "<form method=\"post\" action=\"comment.php?id_post=$id_post&logged_username=$logged_username\" class=\"form_comment\">";
-							echo "<textarea name=\"comment\" id=\"text_comment\" placeholder=\"Write comment here.\"></textarea><br>";
-							echo "<input type=\"submit\" name=\"post_comment\" value=\"Comment\" id=\"button_comment\">";
-							echo "</form>";
 
 							$querycheck = $conn->prepare("select * from comment where id_post = $id_post");
 							$resultcheck = $querycheck->execute();
@@ -305,6 +332,7 @@
 										die("Gagal query");
 									$rows1 = $query1->get_result();
 									while($row1 = $rows1->fetch_array()){
+										$id_comment = $row1['id_comment'];
 										$commenter = $row1['username'];
 										$commenter_name = $row1['name'];
 										$comment = $row1['comment'];
@@ -318,10 +346,17 @@
 										echo "<p style=\"color:#D6D6D6; font-size:10px; margin-left:460px; margin-top:-20px;\">$date_comment</p>";
 										$comment_new = nl2br($comment);
 										echo "<p style=\"margin-left:60px; margin-top: -5px; width:500px; text-align:justify; word-wrap:break-word; font-size:14px;\">$comment_new</p>";
+										if ($commenter == $logged_username) {
+											echo "<a href=\"delete_comment.php?id_comment=$id_comment\" class=\"link_delete_comment\">Delete comment</a>";
+										}
 										echo "<br>";
 									}
-									echo "</div>";
+									echo "</div><br>";
 								}
+								echo "<form method=\"post\" action=\"comment.php?id_post=$id_post&logged_username=$logged_username\" class=\"form_comment\">";
+								echo "<textarea name=\"comment\" id=\"text_comment\" placeholder=\"Write comment here.\"></textarea><br>";
+								echo "<input type=\"submit\" name=\"post_comment\" value=\"Comment\" id=\"button_comment\">";
+								echo "</form>";
 							}
 							echo "</div>";
 							echo "<br><br>";

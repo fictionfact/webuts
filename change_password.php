@@ -10,7 +10,7 @@
 <html>
 <head>
 	<link rel="icon" href="images/resources/logo.png">
-	<title>Edit Profile</title>
+	<title>Change Password - Goblogger</title>
 	<style type="text/css">
 		body{
 			font-family: arial;
@@ -37,6 +37,14 @@
 			text-align: center;
 			margin-top:20px;
 			color:white;
+		}
+		#content{
+			margin: auto;
+			padding-top: 80px;
+			width:950px;
+			min-height: 600px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			background-color: white;
 		}
 		#searchform{
 			margin-left: 500px;
@@ -100,30 +108,19 @@
 		}
 		td{
 			width:150px;
-			height: 30px;
+			height: 50px;
 		}
 		td input{
 			height:30px;
 			width:250px;
 			outline:none;
 		}
-		td select{
-			height:30px;
-			width:254px;
-			outline:none;
-		}
 		table{
 			margin-left:auto;
-			margin-right: auto;
+			margin-right:auto;
+			margin-top: 120px;
 		}
-		#image_edit{
-			display: block;
-			margin-left: auto;
-			margin-right: auto;
-			width:200px;
-			background-color: #79D4F2;
-		}
-		#button_submit_edit{
+		#button{
 			margin-top:5px;
 			height:40px;
 			background-color: #79D4F2;
@@ -132,29 +129,21 @@
 			border-radius: 20px;
 			transition: background-color 300ms;
 		}
-		#button_submit_edit:hover{
+		#button:hover{
 			background-color: #59BDDE;
 		}
-		#button_submit_edit:focus{
+		#button:focus{
 			outline:0;
 		}
-		#reset_image{
-			text-decoration: none;
-			color: #59BDDE;
-			display: block;
-			margin-left: 405px;
-			width:138px;
+		.status{
+			position: absolute;
+			margin-top: 80px;
+			color:red;
 		}
-		#reset_image:hover{
-			text-decoration: underline;
-		}
-		#change_password{
-			margin-left:270px;
-			text-decoration: none;
-			color: #59BDDE;
-		}
-		#change_password:hover{
-			text-decoration:underline;
+		.status_changed{
+			position: absolute;
+			margin-top: 80px;
+			color:#59BDDE;
 		}
 	</style>
 </head>
@@ -193,73 +182,38 @@
 		</div>
 		<div id="content">
 			<?php 
-				$query = $conn->prepare("select * from member where username=?");
-				$query->bind_param("s", $logged_username);
-				$result = $query->execute();
-				if(!$result)
-					die('query gagal');
-				$rows = $query->get_result();
-				while($row = $rows->fetch_array()){
-					$name = $row['name'];
-					$gender = $row['gender'];
-					$location = $row['location'];
-					$occupation = $row['occupation'];
-					$hobby = $row['hobby'];
-					$profile_image_edit = $row['profile_image'];
+				if(isset($_SESSION['password_changed'])) {
+					echo "<label class=\"status_changed\" style=\"margin-left: 350px;\">Password changed successfully!</label>";
+					unset($_SESSION['password_changed']);
 				}
-				if($profile_image != null && $profile_image != '')
-					echo "<img src=\"images/profile/$profile_image_edit\" id=\"image_edit\">";
-				else
-					echo "<img src=\"images/resources/default_profile.png\" id=\"image_edit\">";
-				echo "<br>";
-				if($profile_image != null && $profile_image != '')
-					echo "<a href=\"reset_profile_image.php?username=$logged_username\" id=\"reset_image\">Reset profile image</a><br>";
-			?>
-			<form method="post" action="edit.php" enctype="multipart/form-data">
-				<label style="margin-left:325px;">Change image: </label><input type="file" name="image" accept=".jpg"><br><br>
-				<a href="change_password.php?" id="change_password">Change password</a>
-				<?php
-					if(isset($_SESSION['updated'])){
-						echo "<p style=\"text-align:center; color:#59BDDE\">Profile updated successfully!</p>";
-						unset($_SESSION['updated']);
-					}
-				?>
+				else if(isset($_SESSION['wrong_password'])){
+					echo "<label class=\"status\" style=\"margin-left:400px;\">Your password is wrong!</label>";
+					unset($_SESSION['wrong_password']);
+				}
+				else if(isset($_SESSION['password_not_match'])){
+					echo "<label class=\"status\" style=\"margin-left:380px;\">New passwords don't match!</label>";
+					unset($_SESSION['password_not_match']);
+				}else if(isset($_SESSION['not_filled'])){
+					echo "<label class=\"status\" style=\"margin-left:400px;\">Please fill all the form!</label>";
+					unset($_SESSION['not_filled']);
+				}
+			 ?>
+			<form method="post" action="change_pw.php">
 				<table>
 					<tr>
-						<td>Name</td>
-						<td>
-							<input type="text" name="name" value="<?php echo $name ?>">
-						</td>
+						<td>Old Password</td>
+						<td><input type="password" name="old_password"></td>
 					</tr>
 					<tr>
-						<td>Gender</td>
-						<td>
-							<select name="gender">
-								<option value="m" <?php if($gender=='m'){echo "selected=\"selected\"";} ?>>Male</option>
-								<option value="f" <?php if($gender=='f'){echo "selected=\"selected\"";} ?>>Female</option>
-							</select>
-						</td>
+						<td>New Password</td>
+						<td><input type="password" name="new_password"></td>
 					</tr>
 					<tr>
-						<td>Location</td>
-						<td>
-							<input type="text" name="location" value="<?php echo $location ?>">
-						</td>
+						<td>Confirm Password</td>
+						<td><input type="password" name="confirm_password"></td>
 					</tr>
 					<tr>
-						<td>Occupation</td>
-						<td>
-							<input type="text" name="occupation" value="<?php echo $occupation ?>">
-						</td>
-					</tr>
-					<tr>
-						<td>Hobby</td>
-						<td>
-							<input type="text" name="hobby" value="<?php echo $hobby ?>">
-						</td>
-					</tr>
-					<tr>
-						<td colspan="2"><div style="text-align:right;"><input type="submit" name="submit_edit" value="Edit Profile" id="button_submit_edit"></div></td>
+						<td colspan="2"><div style="text-align:right;"><input type="submit" name="submit_pw" value="Change Password" id="button"></div></td>
 					</tr>
 				</table>
 			</form>
