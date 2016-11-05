@@ -75,6 +75,7 @@
 		#content{
 			margin: auto;
 			padding-top: 80px;
+			min-height:600px;
 			width:950px;
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 			background-color: white;
@@ -120,9 +121,10 @@
 		}
 		#edit_profile{
 			text-decoration: none;
-			margin-left: 670px;
+			margin-left: 650px;
 			margin-top: -30px;
 			display: block;
+			color: #59BDDE;
 		}
 		#edit_profile:hover{
 			text-decoration: underline;
@@ -134,7 +136,7 @@
 		<div id="header">
 			<a href="main.php" style="text-decoration:none; margin-left:200px; margin-top:-100px">
 				<img src="images/resources/logo_no_background.png" style="width:50px; height:50px;">
-				<span style="color:white; font-size:30px; margin-top: 10px; position:absolute; width:100px; height:100px;">Goblogger</span>
+				<span style="color:white; font-size:30px; margin-top: 10px; position:absolute; width:100px;">Goblogger</span>
 			</a>
 			<form method="post" action="search.php"  id="searchform"> 
 				<input type="text" name="name" id="field_search" style="height:20px;"> 
@@ -244,7 +246,18 @@
 			</table>
 			<?php 
 				if ($username_visited == $_COOKIE['logged_in']) {
-					echo "<a href=\"edit_profile.php?username=$username_visited\" id=\"edit_profile\">Edit profile</a>";
+					echo "<a href=\"edit_profile.php\" id=\"edit_profile\">Edit profile</a>";
+				}
+				else{	
+					$query_friend = $conn->prepare("select * from friend where username=? and username_friend=?");
+					$query_friend->bind_param("ss", $logged_username, $username_visited);
+					$result_friend = $query_friend->execute();
+					$rows_friend = $query_friend->get_result();
+					if($rows_friend->num_rows == 1){
+						echo "<a href=\"remove_friend.php?friend=$username_visited\" id=\"edit_profile\">Remove friend</a>";
+					}
+					else
+						echo "<a href=\"add_friend.php?friend=$username_visited\" id=\"edit_profile\">Add friend</a>";
 				}
 			 ?>
 		</div>

@@ -101,7 +101,6 @@
 		}
 		.button:focus{
 			outline:0;
-			border:none;
 		}
 	</style>
 </head>

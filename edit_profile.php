@@ -1,18 +1,16 @@
 <?php 
 	require_once "db.php";
+	session_start();
 	if(empty($_COOKIE['logged_in'])){
-		header("Location: main.php");
-	}
-	if(empty($_POST['name'])){
 		header("Location: main.php");
 	}
 	setcookie("logged_in", $_COOKIE['logged_in'], time()+(86400*7));
  ?>
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html>
 <head>
 	<link rel="icon" href="images/resources/logo.png">
-	<title>Goblogger</title>
+	<title>Edit Profile</title>
 	<style type="text/css">
 		body{
 			font-family: arial;
@@ -74,15 +72,6 @@
 			border: 2px solid white;
 			border-radius: 25px;
 		}
-		#content{
-			margin: auto;
-			padding-top: 80px;
-			width:950px;
-			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-			background-color: white;
-			padding-bottom: 30px;
-			height:600px;
-		}
 		.side_text{
 			text-decoration: none;
 			color:white;
@@ -100,56 +89,59 @@
 		.side_text:hover{
 			background-color: #59BDDE;
 		}
-		.picture_found{
-			width:70px;
-			height:70px;
+		#content{
+			margin: auto;
+			padding-top: 80px;
+			width:950px;
+			height: 600px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+			background-color: white;
+			padding-bottom: 30px;
+		}
+		td{
+			width:150px;
+			height: 30px;
+		}
+		td input{
+			height:30px;
+			width:250px;
+			outline:none;
+		}
+		td select{
+			height:30px;
+			width:254px;
+			outline:none;
+		}
+		table{
+			margin-left:auto;
+			margin-right: auto;
+		}
+		#image_edit{
+			display: block;
+			margin-left: auto;
+			margin-right: auto;
+			width:200px;
 			background-color: #79D4F2;
-			border: 2px solid white;
-			border-radius: 40px;
 		}
-		.name_found{
-			text-decoration: none;
-			font-size: 20px;
-			color: #79D4F2;
-			display: block;
-			width:300px;
-			margin-top: -51px;
-			margin-left: 300px;
+		#button_submit_edit{
+			margin-top:5px;
+			height:40px;
+			background-color: #79D4F2;
+			border:none;
+			color:white;
+			border-radius: 20px;
+			transition: background-color 300ms;
 		}
-		.name_found:hover{
-			text-decoration: underline;
+		#button_submit_edit:hover{
+			background-color: #59BDDE;
 		}
-		.link_found{
-			margin-left: 200px;
-		}
-		.add_friend{
-			display: block;
-			margin-top: -70px;
-			margin-left: 700px;
-			width:75px;
-			text-decoration: none;
-			font-size: 12px;
-			color: #59BDDE;
-		}
-		.add_friend:hover{
-			text-decoration: underline;
-		}
-		.delete_friend{
-			display: block;
-			margin-top: -70px;
-			margin-left: 677px;
-			width:100px;
-			text-decoration: none;
-			font-size: 12px;
-			color: #59BDDE;
-		}
-		.delete_friend:hover{
-			text-decoration: underline;
+		#button_submit_edit:focus{
+			outline:0;
 		}
 	</style>
 </head>
 <body>
-	<div id='wrapper'>
+	<div id="wrapper">
 		<div id="header">
 			<a href="main.php" style="text-decoration:none; margin-left:200px; margin-top:-100px">
 				<img src="images/resources/logo_no_background.png" style="width:50px; height:50px;">
@@ -183,42 +175,73 @@
 		</div>
 		<div id="content">
 			<?php 
-				$username_logged = $_COOKIE['logged_in'];
-				$conn = konek_db();
-				$username_search = "%".$_POST['name']."%";
-				$query = $conn->prepare("select * from member where name like ? or username like ?");
-				$query->bind_param("ss", $username_search, $username_search);
+				$query = $conn->prepare("select * from member where username=?");
+				$query->bind_param("s", $logged_username);
 				$result = $query->execute();
-				$res = $query->get_result();
-				if($res->num_rows == 0){
-					echo "<p style=\"margin-left:100px;\">No result found.</p>";
+				if(!$result)
+					die('query gagal');
+				$rows = $query->get_result();
+				while($row = $rows->fetch_array()){
+					$name = $row['name'];
+					$gender = $row['gender'];
+					$location = $row['location'];
+					$occupation = $row['occupation'];
+					$hobby = $row['hobby'];
+					$profile_image_edit = $row['profile_image'];
 				}
-				else{
-					while ($row = $res->fetch_array()) {
-						$profile_image = $row['profile_image'];
-						$username_found = $row['username'];
-						$name_of_username_found = $row['name'];
-						if ($_COOKIE['logged_in'] == $username_found) {
-							continue;
-						}
-						if($profile_image != null && $profile_image != '')
-							echo "<a href=\"profile.php?username=$username_found\" class=\"link_found\"><img src=\"images/thumbnail/$profile_image\" class=\"picture_found\"></a>";
-						else
-							echo "<a href=\"profile.php?username=$username_found\" class=\"link_found\"><img src=\"images/resources/default_profile.png\" class=\"picture_found\"></a>";
-						echo "<a href=\"profile.php?username=$username_found\" class=\"name_found\">$name_of_username_found</a><br><br><br>";
-						$query_check = $conn->prepare("select * from friend where username = ? and username_friend = ?");
-						$query_check->bind_param("ss", $username_logged, $username_found);
-						$result_check = $query_check->execute();
-						$res1 = $query_check->get_result();
-						if($res1->num_rows == 0){
-							echo "<a href=\"add_friend.php?friend=$username_found\" class=\"add_friend\">Add friend</a><br><br><br>";
-						}
-						else{
-							echo "<a href=\"remove_friend.php?friend=$username_found\" class=\"delete_friend\">Remove friend</a><br><br><br>";
-						}
+				if($profile_image != null && $profile_image != '')
+					echo "<img src=\"images/profile/$profile_image_edit\" id=\"image_edit\">";
+				else
+					echo "<img src=\"images/resources/default_profile.png\" id=\"image_edit\">";
+				echo "<br>";
+			?>
+			<form method="post" action="edit.php" enctype="multipart/form-data">
+				<label style="margin-left:325px;">Change image: </label><input type="file" name="image" accept=".jpg"><br><br>
+				<?php
+					if(isset($_SESSION['updated'])){
+						echo "<p style=\"text-align:center; color:#59BDDE\">Profile updated successfully!</p>";
+						unset($_SESSION['updated']);
 					}
-				}
-			 ?>
+				?>
+				<table>
+					<tr>
+						<td>Name</td>
+						<td>
+							<input type="text" name="name" value="<?php echo $name ?>">
+						</td>
+					</tr>
+					<tr>
+						<td>Gender</td>
+						<td>
+							<select name="gender">
+								<option value="m" <?php if($gender=='m'){echo "selected=\"selected\"";} ?>>Male</option>
+								<option value="f" <?php if($gender=='f'){echo "selected=\"selected\"";} ?>>Female</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Location</td>
+						<td>
+							<input type="text" name="location" value="<?php echo $location ?>">
+						</td>
+					</tr>
+					<tr>
+						<td>Occupation</td>
+						<td>
+							<input type="text" name="occupation" value="<?php echo $occupation ?>">
+						</td>
+					</tr>
+					<tr>
+						<td>Hobby</td>
+						<td>
+							<input type="text" name="hobby" value="<?php echo $hobby ?>">
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><div style="text-align:right;"><input type="submit" name="submit_edit" value="Edit Profile" id="button_submit_edit"></div></td>
+					</tr>
+				</table>
+			</form>
 		</div>
 		<div id="footer">
 			<p>&copy;2016 <a href="main.php" style="text-decoration:none; color:white;">Goblogger.com</a></p>
