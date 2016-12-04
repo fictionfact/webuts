@@ -659,14 +659,12 @@
 						xhr.send(form);
 					}
 					function function_delete_comment(e, id_comment){
-						console.log(e.parentNode.parentNode.children.length);
 						xhr = new XMLHttpRequest();
 						xhr.onreadystatechange = function(){
 							if(xhr.readyState == 4){
 								bl = document.getElementById("block");
 								bl.style.display = "none";
 								if(xhr.status == 200){
-								console.log(e.parentNode.parentNode.children.length);
 									json = JSON.parse(xhr.responseText);
 									if(json.pesan == "something"){
 										e.parentNode.classList.add("anim_out");
@@ -691,11 +689,169 @@
 						}else
 							e.parentNode.parentNode.removeChild(e.parentNode);
 					}
+					// window.onscroll = function(ev) {
+					// 	if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+					// 		xhr = new XMLHttpRequest();
+					// 		xhr.onreadystatechange = function(){
+					// 			if(xhr.readyState == 4){
+					// 				bl = document.getElementById("block");
+					// 				bl.style.display = "none";
+					// 				if(xhr.status == 200){
+					// 					json = JSON.parse(xhr.responseText);
+					// 					console.log(json.array1);
+					// 					if(json.array1.length != 0){
+					// 						for(var i = 0; i < json.array1.length; i++){
+					// 							id_post1 = json.array1[i].id_post_gp;
+					// 							username1 = json.array1[i].username_gp;
+					// 							name1 = json.array1[i].name_gp;
+					// 							content1 = json.array1[i].content_gp;
+					// 							image1 = json.array1[i].image_gp;
+					// 							date1 = json.array1[i].date_gp;
+					// 							profileimage1 = json.array1[i].profileimage_gp;
+
+					// 							var hr2 = document.createElement("hr");
+
+					// 							var post0 = document.createElement('div');
+					// 							var link_profile0 = document.createElement('a');
+					// 							var image_profile0 = document.createElement('img');
+					// 							var username_name0 = document.createElement('a');
+					// 							var br0_1 = document.createElement('br');
+					// 							var link_delete_post0 = document.createElement('a');
+					// 							var br0_2 = document.createElement('br');
+					// 							var content0 = document.createElement('p');
+					// 							var date0 = document.createElement('p');
+					// 							var temp0 = document.createElement("p");
+
+					// 							var comment_list0 = document.createElement('div');
+					// 							var comment_title0 = document.createElement('p');
+
+					// 							var individual_comment0 = document.createElement('div');
+					// 							var link_commenter0 = document.createElement('a');
+					// 							var image_commenter0 = document.createElement('img');
+					// 							var commenter_name0 = document.createElement('a');
+					// 							var br0_3 = document.createElement('br');
+					// 							var date_comment0 = document.createElement('p');
+					// 							var comment_content0 = document.createElement('p');
+					// 							var br0_4 = document.createElement('br');
+
+					// 							var br0_5 = document.createElement('br');
+
+					// 							var form_comment0 = document.createElement('div');
+					// 							var text_comment0 = document.createElement('textarea');
+					// 							var br0_6 = document.createElement('br');
+					// 							var button_comment0 = document.createElement('button');
+					// 							var temp_comment0 = document.createElement('p');
+
+					// 							var br0_7 = document.createElement('br');
+					// 							var br0_8 = document.createElement('br');
+
+					// 							parent0 = document.getElementById('posts');
+
+					// 							link_profile0.href = 'profile.php?username=' + username1;
+					// 							image_profile0.src = profileimage1;
+					// 							image_profile0.classList.add("image_profile");
+					// 							link_profile0.appendChild(image_profile0);
+					// 							link_profile0.classList.add("link_profile");
+
+					// 							username_name0.href = 'profile.php?username=' + username1;
+					// 							username_name0.innerHTML = name1;
+					// 							username_name0.id = "username_name";
+
+					// 							temp0.style.display = "none";
+					// 							temp0.id = "temp";
+					// 							temp0.innerHTML = id_post1;
+					// 							temp0.style.fontSize = "0px";
+
+					// 							link_delete_post0.onclick = 
+					// 							function(){
+					// 								temp_value = $(this).parent().find("#temp").text();
+					// 								function_delete_post(this, temp_value);
+					// 							};
+					// 							link_delete_post0.classList.add("link_delete_post");
+					// 							link_delete_post0.innerHTML = "Delete post";
+
+					// 							if(image1 != null && image1 != ''){
+					// 								var post_image0 = document.createElement("img");
+					// 								post_image0.src = "images/post/" + image1;
+					// 								post_image0.style.width = "400px";
+					// 								post_image0.style.marginLeft = "200px";
+					// 								post_image0.style.marginTop = "10px";
+					// 							}
+
+					// 							content0.innerHTML = content1;
+					// 							content0.style.marginLeft = "150px";
+					// 							content0.style.marginTop = "-2px";
+					// 							content0.style.width = "500px";
+					// 							content0.style.textAlign = "justify";
+					// 							content0.style.wordWrap = "break-word";
+					// 							content0.style.lineHeight = "20px";
+
+					// 							date0.innerHTML = date1;
+					// 							date0.style.marginLeft = "580px";
+					// 							date0.style.fontSize = "12px";
+					// 							date0.style.color = "#D6D6D6";
+
+					// 							text_comment0.name = "comment";
+					// 							text_comment0.id = "text_comment";
+					// 							text_comment0.placeholder = "Write comment here.";
+					// 							button_comment0.type = "button";
+					// 							button_comment0.name = "post_comment";
+					// 							button_comment0.innerHTML = "Comment";
+					// 							button_comment0.id = "button_comment";
+					// 							button_comment0.onclick = 
+					// 							function(){
+					// 								temp_value = $(this).parent().parent().find("#temp").text();
+					// 								function_comment(temp_value, this);
+					// 							};
+					// 							form_comment0.appendChild(text_comment0);
+					// 							form_comment0.appendChild(br0_6);
+					// 							form_comment0.appendChild(button_comment0);
+					// 							form_comment0.method = "post";
+					// 							form_comment0.action = "comment.php?id_post=" + json.id_post + "&logged_username=" + json.logged_username;
+					// 							form_comment0.classList.add("form_comment")
+
+					// 							post0.classList.add("post");
+					// 							post0.classList.add("anim");
+					// 							post0.appendChild(link_profile0);
+					// 							post0.appendChild(username_name0);
+					// 							post0.appendChild(br0_0);
+					// 							post0.appendChild(temp0);
+					// 							post0.appendChild(link_delete_post0);
+					// 							post0.appendChild(br0_1);
+					// 							if(image1 != null && image1 != ''){
+					// 								post0.appendChild(post_image0);
+					// 								post0.appendChild(br0_2);post0.appendChild(br0_3);
+					// 							}
+					// 							post0.appendChild(content0);
+					// 							post0.appendChild(date0);
+					// 							post0.appendChild(form_comment0);
+
+					// 							parent0.insertBefore(br0_4, parent0.firstChild);
+					// 							parent0.insertBefore(br0_5, parent0.firstChild);
+					// 							parent0.insertBefore(post0, parent0.firstChild);
+					// 							parent0.insertBefore(hr, parent0.firstChild);
+					// 						}
+					// 					}
+					// 				}
+					// 			}else{
+					// 				bl = document.getElementById("block");
+					// 				bl.style.display = "block";
+					// 			}
+					// 		}
+					// 		number_of_line = document.getElementById('posts').children.length;
+					// 		number_of_post = (number_of_line/4);
+					// 		form = new FormData();
+					// 		form.append("post_number", number_of_post);
+					// 		xhr.open("post", "get_post.php", true);
+					// 		xhr.send(form);
+					// 	}
+					// };
 				</script>
 
 				<div id="posts">
 					<?php 
 						$conn = konek_db();
+						//$query = $conn->prepare("select post.*, member.name, member.profile_image FROM post left join member ON post.username = member.username where post.username in (select friend.username_friend from friend where friend.username = ?) or post.username = ? order by date desc limit 0,10");
 						$query = $conn->prepare("select post.*, member.name, member.profile_image FROM post left join member ON post.username = member.username where post.username in (select friend.username_friend from friend where friend.username = ?) or post.username = ? order by date desc");
 						$query->bind_param("ss", $logged_username, $logged_username);
 						$result = $query->execute();
