@@ -7,6 +7,6 @@
 		$result = $query->execute();
 		if(!$result)
 			die("Proses query gagal");
-		header("Location: main.php");
+		echo json_encode(array("pesan"=>"something"));
 	}
 ?>

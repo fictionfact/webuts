@@ -79,7 +79,6 @@
 			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 			background-color: white;
 			padding-bottom: 30px;
-			height:600px;
 		}
 		.side_text{
 			text-decoration: none;
@@ -196,7 +195,7 @@
 						$profile_image = $row['profile_image'];
 						$username_found = $row['username'];
 						$name_of_username_found = $row['name'];
-						if ($_COOKIE['logged_in'] == $username_found) {
+						if (strcasecmp($_COOKIE['logged_in'], $username_found) == 0) {
 							continue;
 						}
 						if($profile_image != null && $profile_image != '')
@@ -230,7 +229,7 @@
 							$profile_image = $row['profile_image'];
 							$username_found = $row['username'];
 							$name_of_username_found = $row['name'];
-							if ($_COOKIE['logged_in'] == $username_found) {
+							if (strcasecmp($$_COOKIE['logged_in'], $username_found) == 0) {
 								continue;
 							}
 							if($profile_image != null && $profile_image != '')

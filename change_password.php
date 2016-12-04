@@ -145,6 +145,14 @@
 			margin-top: 80px;
 			color:#59BDDE;
 		}
+		#back_button{
+			color: #79D4F2;
+			text-decoration: none;
+			margin-left:273px;
+		}
+		#back_button:hover{
+			text-decoration: underline;
+		}
 	</style>
 </head>
 <body>
@@ -216,6 +224,7 @@
 						<td colspan="2"><div style="text-align:right;"><input type="submit" name="submit_pw" value="Change Password" id="button"></div></td>
 					</tr>
 				</table>
+				<a href="edit_profile.php" id="back_button">Back</a>
 			</form>
 		</div>
 		<div id="footer">

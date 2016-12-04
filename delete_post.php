@@ -22,7 +22,8 @@
 		$result = $query->execute();
 		if(!$result)
 			die("Proses query gagal 2");
-		unlink("images/post/$image");
-		header("Location: main.php");
+		if($image != null && $image != '')
+			unlink("images/post/$image");
+		echo json_encode(array("pesan"=>"something"));
 	}
 ?>

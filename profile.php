@@ -358,7 +358,7 @@
 				</tr>
 			</table>
 			<?php 
-				if ($username_visited == $_COOKIE['logged_in']) {
+				if (strcasecmp($username_visited, $_COOKIE['logged_in']) == 0) {
 					echo "<a href=\"edit_profile.php\" id=\"edit_profile\">Edit profile</a>";
 				}
 				else{	
@@ -385,7 +385,7 @@
 						die("Gagal query");
 					$rows = $query->get_result();
 					if($rows->num_rows != 0){
-						echo "<br><br><p style=\"color:#59BDDE; font-size:22px; margin-left:370px;\">Posts</p>";
+						echo "<br><br><p style=\"color:#59BDDE; font-size:22px; margin-left:340px;\">Recent posts</p>";
 					}
 					while($row = $rows->fetch_array()){
 						$id_post = $row['id_post'];
@@ -401,21 +401,18 @@
 						else
 							echo "<a href=\"profile.php?username=$username\" class=\"link_profile\"><img src=\"images/resources/default_profile.png\" class=\"image_profile\"></a>";
 						echo "<a href=\"profile.php?username=$username\" id=\"username_name\">$name</a><br>";
-						if ($username == $logged_username) {
+						if (strcasecmp($username, $logged_username) == 0) {
 							echo "<a href=\"delete_post.php?id_post=$id_post\" class=\"link_delete_post\">Delete post</a>";
 						}
 						if($image != null && $image != ''){
 							echo "<img src=\"images/post/$image\" style=\"width:400px; margin-left:200px; margin-top:10px;\"><br><br>";
 						}
-						if ($username == $logged_username)
+						if (strcasecmp($username, $logged_username) == 0)
 							echo "<br>";
 						$content_new = nl2br($content);
-						echo "<p style=\"margin-left:150px; margin-top:-2px; width:500px; text-align:justify; word-wrap:break-word; line-height:20px;\">	$content_new</p>";
+						echo "<p style=\"margin-left:150px; margin-top:-2px; width:500px; text-align:justify; word-wrap:break-word; line-height:20px;\">$content_new</p>";
+
 						echo "<p style=\"margin-left:580px; font-size:12px; color:#D6D6D6;\">$date</p>";
-						echo "<form method=\"post\" action=\"comment.php?id_post=$id_post&logged_username=$logged_username\" class=\"form_comment\">";
-						echo "<textarea name=\"comment\" id=\"text_comment\" placeholder=\"Write comment here.\"></textarea><br>";
-						echo "<input type=\"submit\" name=\"post_comment\" value=\"Comment\" id=\"button_comment\">";
-						echo "</form>";
 
 						$querycheck = $conn->prepare("select * from comment where id_post = $id_post");
 						$resultcheck = $querycheck->execute();
@@ -444,7 +441,7 @@
 									echo "<p style=\"color:#D6D6D6; font-size:10px; margin-left:460px; margin-top:-20px;\">$date_comment</p>";
 									$comment_new = nl2br($comment);
 									echo "<p style=\"margin-left:60px; margin-top: -5px; width:500px; text-align:justify; word-wrap:break-word; font-size:14px;\">$comment_new</p>";
-									if ($commenter == $logged_username) {
+									if (strcasecmp($commenter, $logged_username) == 0) {
 										echo "<a href=\"delete_comment.php?id_comment=$id_comment\" class=\"link_delete_comment\">Delete comment</a>";
 									}
 									echo "<br>";
@@ -453,7 +450,12 @@
 							}
 						}
 						echo "</div>";
-						echo "<br><br>";
+						echo "<br>";
+
+						echo "<form method=\"post\" action=\"comment.php?id_post=$id_post&logged_username=$logged_username\" class=\"form_comment\">";
+						echo "<textarea name=\"comment\" id=\"text_comment\" placeholder=\"Write comment here.\"></textarea><br>";
+						echo "<input type=\"submit\" name=\"post_comment\" value=\"Comment\" id=\"button_comment\">";
+						echo "</form><br><br>";
 					}
 				 ?>
 			</div>
